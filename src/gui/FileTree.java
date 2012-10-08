@@ -12,6 +12,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -25,7 +26,7 @@ public class FileTree extends JPanel{
 
 	private JTree fileTree;
 	private FileSystemModel fileSystemModel;
-	private JTextArea fileDetailsTextArea = new JTextArea("what?");
+	private JTextArea fileDetailsTextArea = new JTextArea("");
 	
 	FileTree(){
 		setBackground(Color.RED);
@@ -47,7 +48,10 @@ public class FileTree extends JPanel{
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, new JScrollPane(fileDetailsTextArea), 
 				new JScrollPane(fileTree));
 	    
-		splitPane.setBorder(new LineBorder(Color.RED, 0, true));
+		LineBorder border = new LineBorder(Color.GREEN, 3, true);
+		splitPane.setBorder(border);
+		
+	
 		
 		add(splitPane);
 	}
