@@ -2,6 +2,9 @@ package dataContainers;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class MediaFile {
 	
@@ -22,8 +25,21 @@ public class MediaFile {
 	/**Extension of the file ("C:\temp\file.txt" => "txt")*/
 	public String fileExt = null;
 	
+	public MediaFile(String filePath){
+		this(new File(filePath));
+	}
+	
+	public MediaFile(String filePath, String imgFilePath){
+		this(new File(filePath), new File(imgFilePath));
+	}
+	
 	public MediaFile(File file){
 		setFile(file);
+	}
+	
+	public MediaFile(File file, File imgFile){
+		this(file);
+		loadImg(imgFile);
 	}
 	
 	public void setThumbnail(Image thumbnail){
@@ -64,6 +80,22 @@ public class MediaFile {
 			fileSizeType = FileSizeEnum.GB;
 		}
 	}
+	
+	
+	public void loadImg(String filePath){
+		loadImg(new File(filePath));
+	}
+	
+	public void loadImg(File file){
+		try {
+			thumbnail = ImageIO.read(file);
+		} catch (IOException e) {
+			System.out.print("Failed to load image for file: " + file.getAbsolutePath() + "\n\n");
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
 
 

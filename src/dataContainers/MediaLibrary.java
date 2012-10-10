@@ -8,9 +8,11 @@ public class MediaLibrary extends ArrayList<MediaFile>{
 	
 	private ArrayList<MediaLibrary> m_subLibrary = null;
 	
-	MediaLibrary(){
-		
+	public MediaLibrary(){
+		// Do Nothing
 	}
+	
+
 	
 	public MediaLibrary addLibrary(){
 		MediaLibrary newLib = new MediaLibrary();
@@ -22,6 +24,8 @@ public class MediaLibrary extends ArrayList<MediaFile>{
 		m_subLibrary.add(library);
 		return library;
 	}
+	
+
 	
 	
 }
