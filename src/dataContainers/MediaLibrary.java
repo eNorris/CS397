@@ -11,9 +11,7 @@ public class MediaLibrary extends ArrayList<MediaFile>{
 	public MediaLibrary(){
 		// Do Nothing
 	}
-	
 
-	
 	public MediaLibrary addLibrary(){
 		MediaLibrary newLib = new MediaLibrary();
 		m_subLibrary.add(newLib);

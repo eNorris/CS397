@@ -46,8 +46,8 @@ public class Wall extends JPanel{
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				m_moving = true;
-				m_lx = 0;//arg0.getX();
-				m_ly = 0;//arg0.getY();
+				m_lx = arg0.getX();
+				m_ly = arg0.getY();
 			}
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -62,8 +62,10 @@ public class Wall extends JPanel{
 				if(m_moving){
 					m_x += arg0.getX() - m_lx;
 					m_y += arg0.getY() - m_ly;
-//					m_lx = m_x;
-//					m_ly = m_y;
+					m_lx = arg0.getX();
+					m_ly = arg0.getY();
+		//			m_lx = m_x;
+		//			m_ly = m_y;
 					repaint();
 				}
 			}
