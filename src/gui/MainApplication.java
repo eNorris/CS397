@@ -16,7 +16,6 @@ public class MainApplication extends JFrame{
 		
 		Core core = new Core();
 		frame.getContentPane().add(core);
-//		frame.setMenuBar(new CoreMenu());
 		
 		frame.setJMenuBar(new CoreMenu());
 		
