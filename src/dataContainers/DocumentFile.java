@@ -6,9 +6,6 @@ import javax.swing.JMenuItem;
 
 public class DocumentFile extends MediaFile {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -432259262007877412L;
 
 	public DocumentFile(File file) {
@@ -21,7 +18,7 @@ public class DocumentFile extends MediaFile {
 		protected JMenuItem m_documentStuff = new JMenuItem("doc stuff...");
 
 		public DocumentFilePopUp(){
-//			add(m_documentStuff);
+			add(m_documentStuff);
 		}
 	}
 

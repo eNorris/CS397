@@ -6,20 +6,32 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-
+/**
+ * Menu system at the top of the Application/Applet
+ * 
+ * @author Edward
+ *
+ */
 public class CoreMenu extends JMenuBar{
 
+	/** Generated via Eclipse */
 	private static final long serialVersionUID = -6260232465922104398L;
 	
+	/**
+	 * Default Constructor - Adds the appropriate Menus
+	 */
 	CoreMenu(){
 		add(generateFileMenu());
 		add(generateEditMenu());
 		add(generateHelpMenu());
 	}
 	
+	/**
+	 * Creates a Menu headed by "File" and populates it
+	 * @return The Menu created
+	 */
 	public JMenu generateFileMenu(){
 		JMenu toReturn = new JMenu("File");
-//		toReturn.setLabel("File");
 		
 		toReturn.add(new MenuItemFileAdd());
 		toReturn.add(new MenuItemFileRemove());
@@ -27,9 +39,12 @@ public class CoreMenu extends JMenuBar{
 		return toReturn;
 	}
 	
+	/**
+	 * Creates a Menu headed by "Edit" and populates it
+	 * @return The Menu created
+	 */
 	public JMenu generateEditMenu(){
 		JMenu toReturn = new JMenu("Edit");
-//		toReturn.setLabel("Edit");
 		
 		toReturn.add(new MenuItemEditChange());
 		toReturn.add(new MenuItemEditModify());
@@ -37,9 +52,12 @@ public class CoreMenu extends JMenuBar{
 		return toReturn;
 	}
 	
+	/**
+	 * Creates a Menu headed by "Help" and populates it
+	 * @return The Menu created
+	 */
 	public JMenu generateHelpMenu(){
 		JMenu toReturn = new JMenu("Help");
-//		toReturn.setLabel("Help");
 		
 		toReturn.add(new MenuItemHelpAbout());
 		
@@ -49,7 +67,6 @@ public class CoreMenu extends JMenuBar{
 	private class MenuItemFileAdd extends JMenuItem{
 		private static final long serialVersionUID = 2614146146651816448L;
 		public MenuItemFileAdd(){
-//			this.setLabel("Add");
 			super("Add");
 			this.setEnabled(true);
 			this.addActionListener(new ActionListener(){
@@ -62,12 +79,12 @@ public class CoreMenu extends JMenuBar{
 		}
 	}
 	
+	/** Creates and returns a JMenuItem for File->Remove */
 	private class MenuItemFileRemove extends JMenuItem{
 		private static final long serialVersionUID = 9216262717029878271L;
 
 		public MenuItemFileRemove(){
 			super("Remove");
-//			this.setLabel("Remove");
 			this.setEnabled(true);
 			this.addActionListener(new ActionListener(){
 				@Override
@@ -79,11 +96,11 @@ public class CoreMenu extends JMenuBar{
 		}
 	}
 	
+	/** Creates and returns a JMenuItem for Edit->Change */
 	private class MenuItemEditChange extends JMenuItem{
 		private static final long serialVersionUID = -5554978003547610060L;
 		public MenuItemEditChange(){
 			super("Change");
-//			this.setLabel("Change");
 			this.setEnabled(true);
 			this.addActionListener(new ActionListener(){
 				@Override
@@ -95,11 +112,11 @@ public class CoreMenu extends JMenuBar{
 		}
 	}
 	
+	/** Creates and returns a JMenuItem for Edit->Modify */
 	private class MenuItemEditModify extends JMenuItem{
 		private static final long serialVersionUID = 1508756105178959414L;
 		public MenuItemEditModify(){
 			super("Modify");
-//			this.setLabel("Modify");
 			this.setEnabled(true);
 			this.addActionListener(new ActionListener(){
 				@Override
@@ -111,11 +128,11 @@ public class CoreMenu extends JMenuBar{
 		}
 	}
 	
+	/** Creates and returns a JMenuItem for Help->About */
 	private class MenuItemHelpAbout extends JMenuItem{
 		private static final long serialVersionUID = 70274194970378772L;
 		public MenuItemHelpAbout(){
 			super("About");
-//			this.setLabel("About");
 			this.setEnabled(true);
 			this.addActionListener(new ActionListener(){
 				@Override

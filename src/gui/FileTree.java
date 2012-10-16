@@ -71,7 +71,6 @@ public class FileTree extends JPanel{
 class FileSystemModel implements TreeModel {
 	private File root;
 
-	//	  private Vector listeners = new Vector();
 	private ArrayList<TreeModelListener> listeners = new ArrayList<TreeModelListener>();
 
 	public FileSystemModel(File rootDirectory) {

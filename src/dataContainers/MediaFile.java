@@ -1,13 +1,19 @@
 package dataContainers;
 
+import java.awt.AlphaComposite;
 import java.awt.Component;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+
+import util.World;
 
 public class MediaFile extends Component{
 	
@@ -39,9 +45,6 @@ public class MediaFile extends Component{
 	// This is the main constructor that everyone else calls
 	public MediaFile(File file){
 		setFile(file);
-//		this.addMouseListener(new MediaFilePopUpListener());
-//		this.add(new MediaFilePopUp());
-//		this.setComponentPopupMenu();
 	}
 	
 	public MediaFile(String filePath){
@@ -102,12 +105,25 @@ public class MediaFile extends Component{
 	}
 	
 	public void loadImg(File file){
-		try {
-			thumbnail = ImageIO.read(file);
-		} catch (IOException e) {
-			System.out.print("Failed to load image for file: " + file.getAbsolutePath() + "\n\n");
-			e.printStackTrace();
+		
+		try{
+			 
+			BufferedImage originalImage = ImageIO.read(file);
+			int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+	 
+			BufferedImage resizedImage;
+			
+			if(World.config.useRenderHint){
+				resizedImage = resizeImageWithHint(originalImage, type);
+			}else{
+				resizedImage = resizeImage(originalImage, type);
+			}
+			thumbnail = resizedImage;
+	 
+		}catch(IOException e){
+			System.out.println(e.getMessage());
 		}
+		
 		w = thumbnail.getWidth(null);
 		h = thumbnail.getHeight(null);
 	}
@@ -152,84 +168,42 @@ public class MediaFile extends Component{
 			add(m_edit);
 			add(m_delete);
 			
-//System.out.print("created\n");
-			
 		}
 	}
 	
 	public void popUp(Component caller, int x, int y){
-//		MediaFilePopUp menu = new MediaFilePopUp();
-//		this.setVisible(true);
-	//	menu.setVisible(true);
- //       menu.show(menu.getComponent(), 0,0);//x,y);//e.getX(), e.getY());
-//		this.setEnabled(true);
-//		this.setVisible(true);
 		m_popUp.setEnabled(true);
 		m_popUp.setVisible(true);
 		m_popUp.show(caller, x, y);
-        
-        
-        
-//        PopUpDemo menu = new PopUpDemo();
-//      menu.show(e.getComponent(), e.getX(), e.getY());
 	}
 	
-//	public class MediaFilePopUpListener extends MouseAdapter{
-//		
-//		@Override
-//		public void mouseClicked(MouseEvent arg0) {
-////System.out.print("click!");
-//		}
-//		
-//		@Override
-//		public void mouseEntered(MouseEvent arg0) {
-//		}
-//		
-//		@Override
-//		public void mouseExited(MouseEvent arg0) {
-//		}
-//		
-//		public void mousePressed(MouseEvent e){
-////System.out.print("file press\n");
-//	        if (e.isPopupTrigger())
-//	            doPop(e);
-//	    }
-//	
-//	    public void mouseReleased(MouseEvent e){
-//	        if (e.isPopupTrigger())
-//	            doPop(e);
-//	    }
-//	
-//	    private void doPop(MouseEvent e){
-////System.out.print("doPop\n");
-//	    	MediaFilePopUp menu = new MediaFilePopUp();
-//	        menu.show(e.getComponent(), 0,0);//e.getX(), e.getY());
-//	    }
-//	}
+	//Author: Mkyong
+	//http://www.mkyong.com/java/how-to-resize-an-image-in-java/
+	private static BufferedImage resizeImage(BufferedImage originalImage, int type){
+		BufferedImage resizedImage = new BufferedImage(World.config.getDimension().width, World.config.getDimension().height, type);
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, World.config.getDimension().width, World.config.getDimension().height, null);
+		g.dispose();
+		return resizedImage;
+	}
+
+	//Author: Mkyong
+	//http://www.mkyong.com/java/how-to-resize-an-image-in-java/
+	private static BufferedImage resizeImageWithHint(BufferedImage originalImage, int type){
+	 
+		BufferedImage resizedImage = new BufferedImage(World.config.getDimension().width, World.config.getDimension().height, type);
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, World.config.getDimension().width, World.config.getDimension().height, null);
+		g.dispose();	
+		g.setComposite(AlphaComposite.Src);
+
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		return resizedImage;
+	}
 }
-
-
-//class PopClickListener extends MouseAdapter {
-//    public void mousePressed(MouseEvent e){
-//        if (e.isPopupTrigger())
-//            doPop(e);
-//    }
-//
-//    public void mouseReleased(MouseEvent e){
-//        if (e.isPopupTrigger())
-//            doPop(e);
-//    }
-//
-//    private void doPop(MouseEvent e){
-//        PopUpDemo menu = new PopUpDemo();
-//        menu.show(e.getComponent(), e.getX(), e.getY());
-//    }
-//}
-//
-//// Then on your component(s)
-//component.addMouseListener(new PopClickListener());
-
-
 
 
 

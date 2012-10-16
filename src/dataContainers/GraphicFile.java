@@ -28,15 +28,12 @@ public class GraphicFile extends MediaFile{
 	}
 
 	public class GraphicFilePopUp extends MediaFilePopUp{
-		/**
-		 * 
-		 */
+
 		private static final long serialVersionUID = -3771804445786297498L;
 
 		protected JMenuItem m_stuff = new JMenuItem("pic stuff...");
 		
 		public GraphicFilePopUp(){
-//System.out.print("audio\n");
 			addSeparator();
 			add(m_stuff);
 		}
