@@ -35,7 +35,7 @@ public class SpaceTimeInt {
 		return this;
 	}
 	
- 	public SpaceTimeInt temporalCollapse(){
+	public SpaceTimeInt temporalCollapse(){
 		ct = lt = dt = 0;
 		return this;
 	}

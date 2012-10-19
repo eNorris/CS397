@@ -7,7 +7,7 @@ public class Config {
 	public final static int MED = 1;
 	public final static int LARGE = 2;
 	
-	public int sizeCode = SMALL;
+	public int sizeCode = MED;
 	public boolean useRenderHint = true;
 	public int bufferSpace = 5;
 	
