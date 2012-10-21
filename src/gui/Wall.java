@@ -8,6 +8,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 import util.SpaceTimeInt;
+import util.SpringEq;
 import util.World;
 
 import dataContainers.AudioFile;
@@ -25,6 +26,8 @@ public class Wall extends JPanel{
 	private int m_y = 0;
 	private int m_lx = 0;
 	private int m_ly = 0;
+	
+	private SpringEq m_springEq = new SpringEq();
 
 	Wall(){
 		setBackground(Color.BLUE);
@@ -74,6 +77,7 @@ public class Wall extends JPanel{
 
 			public void mouseReleased(MouseEvent arg0) {
 				m_moving = false;
+				bounder();
 				
 for(SpaceTimeInt i : World.space.history){
 	System.out.print(i.toString() + "\n");
@@ -88,6 +92,16 @@ System.out.print("\n=========\n");
 		addMouseMotionListener(new MouseMotionListener(){
 
 			public void mouseDragged(MouseEvent arg0) {
+				
+				// Dampened spring equation: mu'' + yu' + ku = 0
+				// omega = sqrt(k/m)
+				// dampeningRatio = y/(2sqrt(mk))
+				// when dampening ration = 1, critically dampened
+				//
+				// Overdampened: Ae^(r1t) + Be^(-r2t)
+				// Underdampened: 
+				
+				
 				if(m_moving){
 					m_x += arg0.getX() - m_lx;
 					m_y += arg0.getY() - m_ly;
@@ -114,6 +128,13 @@ System.out.print("\n=========\n");
 		
 		// Start the timer
 		World.space.bigBang();
+		
+		// Initialize the spring equation
+		m_springEq.mass = 1.0;
+		m_springEq.spring = 1.0;
+		m_springEq.dampen = m_springEq.getCriticalDampening();
+//		m_springEq.dampen = 1.0;
+		m_springEq.A = 1.0;
 	}
 	
 	/**
@@ -146,6 +167,16 @@ System.out.print("\n=========\n");
 	}
 	
 
+	public void bounder(){
+		if(m_springEq.critdampen(World.space.t) < 1){
+			System.out.print("Done with dampening.\n");
+		}else{
+		m_x += 1;
+		repaint();
+		if(World.rand.nextInt(30) != 0)
+			bounder();
+	}
+	
 }
 
 

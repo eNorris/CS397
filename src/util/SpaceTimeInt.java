@@ -3,11 +3,12 @@ package util;
 import java.util.ArrayList;
 
 public class SpaceTimeInt {
-	int cx = 0, cy = 0;
-	int lx = 0, ly = 0;
-	int dx = 0, dy = 0;
-	float vx = 0.0f, vy = 0.0f;
-	long ct = 0, lt = 0, dt = 0;
+	public int cx = 0, cy = 0;
+	public int lx = 0, ly = 0;
+	public int dx = 0, dy = 0;
+	public float vx = 0.0f, vy = 0.0f;
+	public long ct = 0, lt = 0, dt = 0;
+	public double t = 0.0;
 	
 	public SpaceTimeInt(){}
 	
@@ -17,6 +18,7 @@ public class SpaceTimeInt {
 		this.dx = dx; this.dy = dy;
 		this.vx = vx; this.vy = vy;
 		this.ct = ct; this.lt = lt; this.dt = dt;
+		t = 0.0;
 	}
 	
 	public ArrayList<SpaceTimeInt> history = new ArrayList<SpaceTimeInt>();
@@ -26,6 +28,7 @@ public class SpaceTimeInt {
 		spacialCollapse();
 		history.clear();
 		ct = System.currentTimeMillis();
+		t = 0.0;
 		return this;
 	}
 	
@@ -37,6 +40,7 @@ public class SpaceTimeInt {
 	
 	public SpaceTimeInt temporalCollapse(){
 		ct = lt = dt = 0;
+		t = 0.0;
 		return this;
 	}
 	
@@ -50,6 +54,7 @@ public class SpaceTimeInt {
 		lt = ct;
 		ct = System.currentTimeMillis();
 		dt = ct - lt;
+		t += ((double) dt)/1000.0;
 		return this;
 	}
 	
@@ -92,7 +97,7 @@ public class SpaceTimeInt {
 		builder.ensureCapacity(100);
 		
 		builder.append("[(" + cx + ", " + cy + ") <- (" + lx + ", " + ly + ") ~ (");
-		builder.append(dx + ", " + dy + ") @ (" + vx + ", " + vy + ") : <" + ct + " <- " + lt + " ~ " + dt + ">]");
+		builder.append(dx + ", " + dy + ") @ (" + vx + ", " + vy + ") : <" + ct + " <- " + lt + " ~ " + dt + " => " + t + ">]");
 		
 		return builder.toString();
 	}
