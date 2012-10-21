@@ -8,8 +8,22 @@ public class DocumentFile extends MediaFile {
 
 	private static final long serialVersionUID = -432259262007877412L;
 
-	public DocumentFile(File file) {
-		super(file);
+	public DocumentFile(File file, MediaLibrary owner) {
+		super(file, owner);
+		m_popUp = new DocumentFilePopUp();
+	}
+	
+	public DocumentFile(String filePath, MediaLibrary owner){
+		this(new File(filePath), owner);
+	}
+	
+	public DocumentFile(String filePath, String imgFilePath, MediaLibrary owner){
+		this(new File(filePath), new File(imgFilePath), owner);
+	}
+	
+	public DocumentFile(File file, File imgFile, MediaLibrary owner){
+		this(file, owner);
+		loadImg(imgFile);
 	}
 	
 	public class DocumentFilePopUp extends MediaFilePopUp{

@@ -2,6 +2,7 @@ package dataContainers;
 
 import java.awt.AlphaComposite;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -31,6 +32,8 @@ public class MediaFile extends Component{
 	public int fileSize = 0;
 	public FileSizeEnum fileSizeType = FileSizeEnum.BYTE;
 	
+	public MediaLibrary owner = null;
+	
 	protected MediaFilePopUp m_popUp = new MediaFilePopUp();
 	
 	/**Name of the file without extension ("C:\temp\file.txt" => "file")*/
@@ -40,23 +43,23 @@ public class MediaFile extends Component{
 	public String fileExt = null;
 	
 	public int x = 0, y = 0, w = 0, h = 0;
-	public static int worldShiftX = 0, worldShiftY = 0;
 	
 	// This is the main constructor that everyone else calls
-	public MediaFile(File file){
+	public MediaFile(File file, MediaLibrary owner){
 		setFile(file);
+		this.owner = owner;
 	}
 	
-	public MediaFile(String filePath){
-		this(new File(filePath));
+	public MediaFile(String filePath, MediaLibrary owner){
+		this(new File(filePath), owner);
 	}
 	
-	public MediaFile(String filePath, String imgFilePath){
-		this(new File(filePath), new File(imgFilePath));
+	public MediaFile(String filePath, String imgFilePath, MediaLibrary owner){
+		this(new File(filePath), new File(imgFilePath), owner);
 	}
 	
-	public MediaFile(File file, File imgFile){
-		this(file);
+	public MediaFile(File file, File imgFile, MediaLibrary owner){
+		this(file, owner);
 		loadImg(imgFile);
 	}
 	
@@ -75,7 +78,7 @@ public class MediaFile extends Component{
 	}
 	
 	public void fetchMetaData(){
-		
+		// FIXME - not yet implemented
 	}
 	
 	protected void resolveFileSize(){
@@ -99,7 +102,6 @@ public class MediaFile extends Component{
 		}
 	}
 	
-	
 	public void loadImg(String filePath){
 		loadImg(new File(filePath));
 	}
@@ -107,7 +109,6 @@ public class MediaFile extends Component{
 	public void loadImg(File file){
 		
 		try{
-			 
 			BufferedImage originalImage = ImageIO.read(file);
 			int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
 	 
@@ -134,11 +135,11 @@ public class MediaFile extends Component{
 	}
 	
 	public int getX(){
-		return x + worldShiftX;
+		return x + owner.space.cx;
 	}
 	
 	public int getY(){
-		return y + worldShiftY;
+		return y + owner.space.cy;
 	}
 	
 	public boolean isInBoundsLocal(int x, int y){
@@ -149,10 +150,10 @@ public class MediaFile extends Component{
 	}
 	
 	public boolean isInBounds(int x, int y){
-		return (x >= this.x + worldShiftX && 			// left bound
-				x <= this.x + worldShiftX + w && 		// right bound
-				y >= this.y + worldShiftY && 			// top bound
-				y <= this.y + worldShiftY + this.h);	// bottom bound
+		return (x >= this.x + owner.space.cx && 			// left bound
+				x <= this.x + owner.space.cx + w && 		// right bound
+				y >= this.y + owner.space.cy && 			// top bound
+				y <= this.y + owner.space.cy + this.h);		// bottom bound
 	}
 	
 	public class MediaFilePopUp extends JPopupMenu{
@@ -167,7 +168,6 @@ public class MediaFile extends Component{
 			add(m_open);
 			add(m_edit);
 			add(m_delete);
-			
 		}
 	}
 	
@@ -202,6 +202,10 @@ public class MediaFile extends Component{
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		return resizedImage;
+	}
+	
+	public void draw(Graphics g){
+		g.drawImage(thumbnail, x + owner.space.ix, y + owner.space.iy, null);
 	}
 }
 

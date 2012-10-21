@@ -18,8 +18,22 @@ public class VideoFile extends MediaFile {
 	
 	int durationTime = 0; // In seconds
 
-	public VideoFile(File file) {
-		super(file);
+	public VideoFile(File file, MediaLibrary owner) {
+		super(file, owner);
+		m_popUp = new VideoFilePopUp();
+	}
+	
+	public VideoFile(String filePath, MediaLibrary owner){
+		this(new File(filePath), owner);
+	}
+	
+	public VideoFile(String filePath, String imgFilePath, MediaLibrary owner){
+		this(new File(filePath), new File(imgFilePath), owner);
+	}
+	
+	public VideoFile(File file, File imgFile, MediaLibrary owner){
+		this(file, owner);
+		loadImg(imgFile);
 	}
 	
 	public class VideoFilePopUp extends MediaFilePopUp{

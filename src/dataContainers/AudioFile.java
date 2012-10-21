@@ -9,21 +9,21 @@ public class AudioFile extends MediaFile{
 
 	private static final long serialVersionUID = 7906650163065032773L;
 
-	public AudioFile(File file) {
-		super(file);
+	public AudioFile(File file, MediaLibrary owner) {
+		super(file, owner);
 		m_popUp = new AudioFilePopUp();
 	}
 	
-	public AudioFile(String filePath){
-		this(new File(filePath));
+	public AudioFile(String filePath, MediaLibrary owner){
+		this(new File(filePath), owner);
 	}
 	
-	public AudioFile(String filePath, String imgFilePath){
-		this(new File(filePath), new File(imgFilePath));
+	public AudioFile(String filePath, String imgFilePath, MediaLibrary owner){
+		this(new File(filePath), new File(imgFilePath), owner);
 	}
 	
-	public AudioFile(File file, File imgFile){
-		this(file);
+	public AudioFile(File file, File imgFile, MediaLibrary owner){
+		this(file, owner);
 		loadImg(imgFile);
 	}
 	

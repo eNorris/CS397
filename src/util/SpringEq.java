@@ -38,7 +38,7 @@ public class SpringEq {
 	}
 	
 	public boolean isSubDampened(){
-		
+		return true;
 	}
 	
 }

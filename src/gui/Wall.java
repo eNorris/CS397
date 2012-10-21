@@ -7,7 +7,6 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
-import util.SpaceTimeInt;
 import util.SpringEq;
 import util.World;
 
@@ -22,10 +21,6 @@ public class Wall extends JPanel{
 	MediaLibrary currentLib = new MediaLibrary();
 	
 	private boolean m_moving = false;
-	private int m_x = 0;
-	private int m_y = 0;
-	private int m_lx = 0;
-	private int m_ly = 0;
 	
 	private SpringEq m_springEq = new SpringEq();
 
@@ -38,12 +33,13 @@ public class Wall extends JPanel{
 			
 			int randomness = World.rand.nextInt();
 			
+			// Randomly seed with some files
 			if(randomness % 3 == 0){
-				currentLib.add(new MediaFile("library/doc2.txt", "graphics/thumb1.bmp"));
+				currentLib.add(new MediaFile("library/doc2.txt", "graphics/thumb1.bmp", currentLib));
 			}else if(randomness % 3 == 1){
-				currentLib.add(new AudioFile("library/test.mp3", "graphics/musicthumb.bmp"));
+				currentLib.add(new AudioFile("library/test.mp3", "graphics/musicthumb.bmp", currentLib));
 			}else{
-				currentLib.add(new GraphicFile("library/testpic.png", "graphics/picthumb.bmp"));
+				currentLib.add(new GraphicFile("library/testpic.png", "graphics/picthumb.bmp", currentLib));
 			}
 		}
 		
@@ -58,11 +54,10 @@ public class Wall extends JPanel{
 				if(ev.getButton() == MouseEvent.BUTTON1){
 					// left click => consum
 					m_moving = true;
-					m_lx = ev.getX();
-					m_ly = ev.getY();
 					
-//					World.space.chronicle();
-					World.space.wormHole(m_x, m_y);
+					currentLib.space.wormHole(ev.getX(), ev.getY());
+					World.space.wormHole(ev.getX(), ev.getY());
+					
 				}else if(ev.getButton() == MouseEvent.BUTTON2){
 					// midle click => do nothing
 				}else{
@@ -77,12 +72,12 @@ public class Wall extends JPanel{
 
 			public void mouseReleased(MouseEvent arg0) {
 				m_moving = false;
-				bounder();
+	//			bounder();
 				
-for(SpaceTimeInt i : World.space.history){
-	System.out.print(i.toString() + "\n");
-}
-System.out.print("\n=========\n");
+//for(SpaceTimeInt i : World.space.history){
+//	System.out.print(i.toString() + "\n");
+//}
+//System.out.print("\n=========\n");
 				
 				
 			}
@@ -91,31 +86,10 @@ System.out.print("\n=========\n");
 		
 		addMouseMotionListener(new MouseMotionListener(){
 
-			public void mouseDragged(MouseEvent arg0) {
-				
-				// Dampened spring equation: mu'' + yu' + ku = 0
-				// omega = sqrt(k/m)
-				// dampeningRatio = y/(2sqrt(mk))
-				// when dampening ration = 1, critically dampened
-				//
-				// Overdampened: Ae^(r1t) + Be^(-r2t)
-				// Underdampened: 
-				
-				
+			public void mouseDragged(MouseEvent ev) {
 				if(m_moving){
-					m_x += arg0.getX() - m_lx;
-					m_y += arg0.getY() - m_ly;
-					
-					// FIXME - replace this and m_x with a Util.XX
-					MediaFile.worldShiftX = m_x;
-					MediaFile.worldShiftY = m_y;
-					
-					m_lx = arg0.getX();
-					m_ly = arg0.getY();
-					
-					World.space.universalUpdate(m_x, m_y);
-					World.space.chronicle();
-					
+					currentLib.space.universalUpdate(ev.getX(), ev.getY());
+					World.space.universalUpdate(ev.getX(), ev.getY());
 					repaint();
 				}
 			}
@@ -124,7 +98,7 @@ System.out.print("\n=========\n");
 		});
 		
 		// places the media files on the screen
-		distribute();
+		currentLib.distribute();
 		
 		// Start the timer
 		World.space.bigBang();
@@ -133,48 +107,35 @@ System.out.print("\n=========\n");
 		m_springEq.mass = 1.0;
 		m_springEq.spring = 1.0;
 		m_springEq.dampen = m_springEq.getCriticalDampening();
-//		m_springEq.dampen = 1.0;
-		m_springEq.A = 1.0;
+		m_springEq.A = 10.0;
 	}
 	
-	/**
-	 * Places the media files on the screen
-	 */
-	public void distribute(){
-		
-		// FIXME - calculate this
-		final int rows = 5;
-		
-		for(int i = 0; i < currentLib.size(); i++){
-			
-			int x = World.config.bufferSpace;
-			int y = i*(World.config.getDimension().height + World.config.bufferSpace) + World.config.bufferSpace;//150;
-			
-			while(y >= (World.config.getDimension().height + World.config.bufferSpace)*rows){
-				y -= (World.config.getDimension().height + World.config.bufferSpace)*rows;
-				x += World.config.getDimension().width + World.config.bufferSpace;
-			}
-			currentLib.get(i).setPos(x, y);
-		}
-	}
+	
 	
 	public void paint(Graphics g){
 		super.paint(g);
-		
-		for(int i = 0; i < currentLib.size(); i++){
-			g.drawImage(currentLib.get(i).thumbnail, currentLib.get(i).x + m_x, currentLib.get(i).y + m_y, null);
-		}
+		currentLib.draw(g);
 	}
 	
 
 	public void bounder(){
-		if(m_springEq.critdampen(World.space.t) < 1){
-			System.out.print("Done with dampening.\n");
-		}else{
-		m_x += 1;
-		repaint();
-		if(World.rand.nextInt(30) != 0)
-			bounder();
+		currentLib.space.ix += 1;
+		if(World.rand.nextInt(100) == 0){
+			return;
+		}
+//		bounder();
+//System.out.print("bounder() @ t = " + World.space.t + ": ");
+//		if(m_springEq.critdampen(World.space.t) < 1){
+//System.out.print("Done with dampening.)" + m_springEq.critdampen(World.space.t) + ")\n");
+//		}else{
+//System.out.print("Recurse...(" + m_springEq.critdampen(World.space.t) + ")\n");
+//			// FIXME - what about the other values?
+//			currentLib.space.ix += m_springEq.critdampen(World.space.t);
+//			World.space.temporalUpdate();
+//			repaint();
+//			if(World.rand.nextInt(30) != 0)
+//				bounder();
+//		}
 	}
 	
 }
