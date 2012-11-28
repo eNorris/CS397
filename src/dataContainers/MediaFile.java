@@ -160,6 +160,7 @@ public class MediaFile extends Component{
 		
 		protected JMenuItem m_open = new JMenuItem("Open");
 		protected JMenuItem m_edit = new JMenuItem("Edit");
+		protected JMenuItem m_copy = new JMenuItem("Copy");
 		protected JMenuItem m_delete = new JMenuItem("Delete");
 
 		private static final long serialVersionUID = -8357288887563917285L;
@@ -167,6 +168,7 @@ public class MediaFile extends Component{
 		public MediaFilePopUp(){
 			add(m_open);
 			add(m_edit);
+			add(m_copy);
 			add(m_delete);
 		}
 	}
@@ -205,7 +207,8 @@ public class MediaFile extends Component{
 	}
 	
 	public void draw(Graphics g){
-		g.drawImage(thumbnail, x + owner.space.ix, y + owner.space.iy, null);
+//		g.drawImage(thumbnail, x + owner.space.ix, y + owner.space.iy, null);
+		g.drawImage(thumbnail, x + owner.space.ix, y + World.space.iy, null);
 	}
 }
 

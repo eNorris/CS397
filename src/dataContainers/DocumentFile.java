@@ -29,7 +29,7 @@ public class DocumentFile extends MediaFile {
 	public class DocumentFilePopUp extends MediaFilePopUp{
 
 		private static final long serialVersionUID = 7864855181664320942L;
-		protected JMenuItem m_documentStuff = new JMenuItem("doc stuff...");
+		protected JMenuItem m_documentStuff = new JMenuItem("Doc stuff...");
 
 		public DocumentFilePopUp(){
 			add(m_documentStuff);

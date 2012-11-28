@@ -1,5 +1,9 @@
 package dataContainers;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 
 import javax.swing.JMenuItem;
@@ -30,11 +34,19 @@ public class GraphicFile extends MediaFile{
 
 		private static final long serialVersionUID = -3771804445786297498L;
 
-		protected JMenuItem m_stuff = new JMenuItem("pic stuff...");
+		protected JMenuItem m_stuff = new JMenuItem("Pic stuff...");
 		
 		public GraphicFilePopUp(){
 			addSeparator();
 			add(m_stuff);
+			
+			m_stuff.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 		
 	}

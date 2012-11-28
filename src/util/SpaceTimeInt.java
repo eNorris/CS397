@@ -117,7 +117,8 @@ public class SpaceTimeInt {
 	 * @return The calling SpaceTimeInt after clearing cx, cy, lx, ly, dx, dy, vx, and vy
 	 */
 	public SpaceTimeInt spacialCollapse(){
-		cx = cy = lx = ly = dx = dy = ix = iy = 0;
+		// FIXME - Find a better way to do this than not resetting ix and iy
+		cx = cy = lx = ly = dx = dy = 0;//ix = iy = 0;
 		vx = vy = 0.0f;
 		return this;
 	}

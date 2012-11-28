@@ -72,7 +72,7 @@ public class Wall extends JPanel{
 
 			public void mouseReleased(MouseEvent arg0) {
 				m_moving = false;
-	//			bounder();
+//				bounder();
 				
 //for(SpaceTimeInt i : World.space.history){
 //	System.out.print(i.toString() + "\n");
@@ -89,7 +89,7 @@ public class Wall extends JPanel{
 			public void mouseDragged(MouseEvent ev) {
 				if(m_moving){
 					currentLib.space.universalUpdate(ev.getX(), ev.getY());
-					World.space.universalUpdate(ev.getX(), ev.getY());
+		//			World.space.universalUpdate(ev.getX(), ev.getY());
 					repaint();
 				}
 			}
@@ -114,15 +114,26 @@ public class Wall extends JPanel{
 	
 	public void paint(Graphics g){
 		super.paint(g);
+System.out.print("Wall:paint(): painting!\n");
 		currentLib.draw(g);
 	}
 	
 
 	public void bounder(){
+		System.out.print("bounder!\n");
 		currentLib.space.ix += 1;
-		if(World.rand.nextInt(100) == 0){
+		if(World.rand.nextInt(10) == 0){
 			return;
 		}
+System.out.print("Should repaint now!");
+		this.repaint();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bounder();
 //		bounder();
 //System.out.print("bounder() @ t = " + World.space.t + ": ");
 //		if(m_springEq.critdampen(World.space.t) < 1){
